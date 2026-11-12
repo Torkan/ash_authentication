@@ -380,6 +380,35 @@ defmodule AshAuthentication.Strategy.OtpTest do
       assert user2.id == user.id
     end
 
+    test "the identity arguments cast like the identity attribute, so any casing signs in" do
+      strategy = Info.strategy!(Example.UserWithRegisterOtp, :otp)
+      email = "test_#{System.unique_integer([:positive])}@example.com"
+      typed = String.capitalize(email)
+
+      assert {:ok, user} =
+               Strategy.action(
+                 strategy,
+                 :sign_in,
+                 %{"email" => email, "otp" => extract_otp_code_for_email(strategy, email)},
+                 []
+               )
+
+      for {requested, signing_in} <- [{typed, typed}, {email, typed}, {typed, email}] do
+        otp_code = extract_otp_code_for_email(strategy, requested)
+
+        assert {:ok, signed_in} =
+                 Strategy.action(
+                   strategy,
+                   :sign_in,
+                   %{"email" => signing_in, "otp" => otp_code},
+                   []
+                 )
+
+        assert signed_in.id == user.id
+        assert to_string(signed_in.email) == email
+      end
+    end
+
     test "fails with invalid OTP code for new user" do
       strategy = Info.strategy!(Example.UserWithRegisterOtp, :otp)
       email = "test_#{System.unique_integer([:positive])}@example.com"

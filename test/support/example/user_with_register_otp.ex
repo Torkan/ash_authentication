@@ -14,7 +14,10 @@ defmodule Example.UserWithRegisterOtp do
   attributes do
     uuid_primary_key :id, writable?: true
 
-    attribute :email, :ci_string, allow_nil?: false, public?: true
+    attribute :email, :ci_string,
+      allow_nil?: false,
+      public?: true,
+      constraints: [casing: :lower]
 
     create_timestamp :created_at
     update_timestamp :updated_at

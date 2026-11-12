@@ -126,6 +126,7 @@ defmodule AshAuthentication.Strategy.Otp.Transformer do
       Transformer.build_entity!(Resource.Dsl, [:actions, :create], :argument,
         name: strategy.identity_field,
         type: identity_attribute.type,
+        constraints: identity_attribute.constraints,
         allow_nil?: false
       ),
       Transformer.build_entity!(Resource.Dsl, [:actions, :create], :argument,
@@ -172,6 +173,7 @@ defmodule AshAuthentication.Strategy.Otp.Transformer do
       Transformer.build_entity!(Resource.Dsl, [:actions, :read], :argument,
         name: strategy.identity_field,
         type: identity_attribute.type,
+        constraints: identity_attribute.constraints,
         allow_nil?: false
       ),
       Transformer.build_entity!(Resource.Dsl, [:actions, :read], :argument,
@@ -214,6 +216,7 @@ defmodule AshAuthentication.Strategy.Otp.Transformer do
       Transformer.build_entity!(Resource.Dsl, [:actions, :read], :argument,
         name: field,
         type: identity_attribute.type,
+        constraints: identity_attribute.constraints,
         allow_nil?: false,
         description: "The #{field} to look up."
       )
@@ -235,6 +238,7 @@ defmodule AshAuthentication.Strategy.Otp.Transformer do
       Transformer.build_entity!(Resource.Dsl, [:actions, :action], :argument,
         name: strategy.identity_field,
         type: identity_attribute.type,
+        constraints: identity_attribute.constraints,
         allow_nil?: false,
         description: "The identity to send a one-time password to."
       )
